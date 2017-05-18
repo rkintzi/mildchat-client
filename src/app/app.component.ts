@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-import {WebSocketService} from './websocket.service';
 import {ChatService} from './chat.service'
 
 @Component({
@@ -12,7 +11,7 @@ import {ChatService} from './chat.service'
             <create-message></create-message>
         </div>
     `,
-    providers: [ChatService, WebSocketService],
+    providers: [ChatService],
 })
 
 export class AppComponent {}

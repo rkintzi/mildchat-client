@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import {ChatService} from './chat.service'
+import {ChatService, ChatMessage} from './chat.service'
 
 @Component({
     selector: 'create-message',
@@ -8,7 +8,7 @@ import {ChatService} from './chat.service'
         <form #sendMsg="ngForm" (ngSubmit)="onSubmit($event)">
             <div class="input-group col-xs-8">
                 <input
-                    [(ngModel)]="message.message"
+                    [(ngModel)]="message.body"
                     ngControl="msg"
                     required
                     name="message"
@@ -28,16 +28,15 @@ import {ChatService} from './chat.service'
 
 export class CreateMessage {
     private submitted = false;
-    private message = {
-        author: 'gogo',
-        message: '',
+    private message: ChatMessage = {
+        body: '',
     }
 
     constructor(private chatService: ChatService) {}
 
     private onSubmit(event: Event) {
-        this.chatService.send(this.message);
-        this.message.message = '';
+        this.chatService.sendChatMessage(this.message);
+        this.message.body = '';
         event.preventDefault();
     }
 }
