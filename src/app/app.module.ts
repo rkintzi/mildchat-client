@@ -13,7 +13,7 @@ import {Navbar} from './navbar.component';
         BrowserModule,
         FormsModule,
     ],
-    bootstrap:    [ AppComponent ]
+    bootstrap:    [ AppComponent ],
     declarations: [
         AppComponent,
         Navbar,

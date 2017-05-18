@@ -9,7 +9,6 @@ import { ChatService, Message} from './chat.service';
             <p *ngFor="let msg of messages; let last = last">{{ msg.message }}</p>
         </div>
     `,
-    providers: [ChatService]
 })
 export class Chat {
     private messages: Message[] = new Array();

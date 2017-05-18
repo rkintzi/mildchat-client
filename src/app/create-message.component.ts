@@ -5,7 +5,7 @@ import {ChatService} from './chat.service'
 @Component({
     selector: 'create-message',
     template: `
-        <form #sendMsg="ngForm" (ngSubmit)="onSubmit()">
+        <form #sendMsg="ngForm" (ngSubmit)="onSubmit($event)">
             <div class="input-group col-xs-8">
                 <input
                     [(ngModel)]="message.message"
@@ -24,7 +24,6 @@ import {ChatService} from './chat.service'
             </div>
         </form>
     `,
-    providers: [ChatService]
 })
 
 export class CreateMessage {
@@ -36,8 +35,9 @@ export class CreateMessage {
 
     constructor(private chatService: ChatService) {}
 
-    private onSubmit() {
-        this.chatService.messages.next(this.message);
+    private onSubmit(event: Event) {
+        this.chatService.send(this.message);
         this.message.message = '';
+        event.preventDefault();
     }
 }
