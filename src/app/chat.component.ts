@@ -6,7 +6,7 @@ import { ChatService, ChatMessage} from './chat.service';
     selector: 'chat',
     template: `
         <div class="messages">
-            <p *ngFor="let msg of messages; let last = last">{{ msg.body }}</p>
+            <p *ngFor="let msg of messages; let last = last">{{ msg }}</p>
         </div>
     `,
 })

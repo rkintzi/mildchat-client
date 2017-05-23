@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import {ChatService, ChatMessage} from './chat.service'
+import {ChatService, ChatMessage, NickMessage} from './chat.service'
 
 @Component({
     selector: 'create-message',
@@ -8,10 +8,10 @@ import {ChatService, ChatMessage} from './chat.service'
         <form #sendMsg="ngForm" (ngSubmit)="onSubmit($event)">
             <div class="input-group col-xs-8">
                 <input
-                    [(ngModel)]="message.body"
+                    [(ngModel)]="cmd"
                     ngControl="msg"
                     required
-                    name="message"
+                    name="cmd"
                     type="text"
                     class="form-control"
                     placeholder="message...">
@@ -28,15 +28,21 @@ import {ChatService, ChatMessage} from './chat.service'
 
 export class CreateMessage {
     private submitted = false;
-    private message: ChatMessage = {
-        body: '',
-    }
+    private cmd: string;
 
     constructor(private chatService: ChatService) {}
 
     private onSubmit(event: Event) {
-        this.chatService.sendChatMessage(this.message);
-        this.message.body = '';
+        if (this.cmd.startsWith('/nick ')) {
+            let msg = new NickMessage();
+            msg.newName = this.cmd.substr(6);
+            this.chatService.sendNickMessage(msg);
+        } else {
+            let msg = new ChatMessage()
+            msg.body = this.cmd;
+            this.chatService.sendChatMessage(msg);
+        }
+        this.cmd = '';
         event.preventDefault();
     }
 }
