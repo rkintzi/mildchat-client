@@ -49,7 +49,6 @@ export class NickMessage implements Message {
     }
 
     toString(): string {
-        console.log(this, "A"+this.newName+"B", this.newName=="");
         if (this.newName == "" && this.oldName != "") {
             return this.oldName+" has left the channel";
         } else if (this.oldName != '') {
