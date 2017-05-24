@@ -7,7 +7,7 @@ import { Observer } from 'rxjs/Observer';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
-import 'rxjs/add/observable/dom/webSocket'
+import 'rxjs/add/observable/dom/webSocket';
 
 const CHAT_URL = 'ws://localhost:8080/chat';
 
@@ -78,46 +78,8 @@ export class ChatService {
     public messages: Observable<Message>;
     private ws: Subject<any>;
     constructor() {
-        let subject = new Subject<Message>()
-
-        this.ws = Observable.webSocket<frame>(CHAT_URL);
-        let refs = 0;
-        this.messages = new Observable<Message>((observer:Observer<any>)=>{
-            let subscription: Subscription;    
-            if (refs == 0) {
-                subscription = this.ws
-                    .map(this.parseFrame)
-                    .filter(m=>m != null)
-                    .subscribe(m=>subject.next(m));
-            }
-            refs++;
-            let sub = subject.subscribe(observer);
-            return () => {
-                refs--;
-                if (refs == 0) subscription.unsubscribe();
-                sub.unsubscribe();
-            };
-        });
-    }
-
-    private parseFrame(frame: frame): Message {
-        if (frame.type=="ChatMessage") {
-            let msg = new ChatMessage()
-            msg.author = frame.data.author;
-            msg.body = frame.data.body;
-            return msg;
-        } else if (frame.type=="NickMessage") {
-            let msg = new NickMessage()
-            msg.oldName = frame.data.old_name;
-            msg.newName = frame.data.new_name;
-            return msg;
-        } else if (frame.type=="ErrorMessage") {
-            let msg = new ErrorMessage()
-            msg.errorCode = frame.data.error_code;
-            msg.message = frame.data.message;
-            return msg;
-        }
-        return null;
+        this.ws = Observable.webSocket(CHAT_URL);
+        this.messages = makeHot(this.ws).map(parseFrame).filter(m=>m!=null);
     }
 
     sendNickMessage(msg: NickMessage) {
@@ -142,3 +104,40 @@ export class ChatService {
 
 }
 
+function parseFrame(frame: frame): Message {
+    if (frame.type=="ChatMessage") {
+        let msg = new ChatMessage()
+        msg.author = frame.data.author;
+        msg.body = frame.data.body;
+        return msg;
+    } else if (frame.type=="NickMessage") {
+        let msg = new NickMessage()
+        msg.oldName = frame.data.old_name;
+        msg.newName = frame.data.new_name;
+        return msg;
+    } else if (frame.type=="ErrorMessage") {
+        let msg = new ErrorMessage()
+        msg.errorCode = frame.data.error_code;
+        msg.message = frame.data.message;
+        return msg;
+    }
+    return null;
+}
+
+function makeHot<T>(cold: Observable<T>): Observable<T> {
+    let subject = new Subject();
+    let refs = 0;
+    return Observable.create((observer:Observer<T>)=>{
+        let coldSub: Subscription;    
+        if (refs == 0) {
+            coldSub = cold.subscribe(o=>subject.next(o));
+        }
+        refs++;
+        let hotSub = subject.subscribe(observer);
+        return () => {
+            refs--;
+            if (refs == 0) coldSub.unsubscribe();
+            hotSub.unsubscribe();
+        };
+    })
+}
