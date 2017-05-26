@@ -9,7 +9,6 @@ import { ChatService, ChatMessage, NickMessage } from './chat.service';
             <div class="input-group col-xs-8">
                 <input
                     [(ngModel)]="cmd"
-                    ngControl="msg"
                     required
                     name="cmd"
                     type="text"
