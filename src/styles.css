@@ -40,8 +40,6 @@ navbar, chat, create-message {
     display: block;
 }
 
-chat { overflow-y: scroll; flex: 1; }
-
 create-message {
     margin: 10px 0;
 }
