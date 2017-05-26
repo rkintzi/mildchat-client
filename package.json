@@ -51,6 +51,7 @@
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.0.2",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-junit-reporter": "^0.4.1",
     "lite-server": "^2.2.2",
     "lodash": "^4.16.4",
     "protractor": "~4.0.14",
