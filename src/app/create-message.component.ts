@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import {ChatService, ChatMessage, NickMessage} from './chat.service'
+import { ChatService, ChatMessage, NickMessage } from './chat.service';
 
 @Component({
     selector: 'create-message',
@@ -27,18 +27,17 @@ import {ChatService, ChatMessage, NickMessage} from './chat.service'
 })
 
 export class CreateMessage {
-    private submitted = false;
-    private cmd: string;
+    cmd: string;
 
     constructor(private chatService: ChatService) {}
 
-    private onSubmit(event: Event) {
+    onSubmit(event: Event) {
         if (this.cmd.startsWith('/nick ')) {
             let msg = new NickMessage();
             msg.newName = this.cmd.substr(6);
             this.chatService.sendNickMessage(msg);
         } else {
-            let msg = new ChatMessage()
+            let msg = new ChatMessage();
             msg.body = this.cmd;
             this.chatService.sendChatMessage(msg);
         }
