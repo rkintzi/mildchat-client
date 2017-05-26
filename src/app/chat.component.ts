@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { ChatService } from './chat.service';
 
 @Component({
@@ -11,7 +10,7 @@ import { ChatService } from './chat.service';
     `,
 })
 export class Chat {
-    private messages: string[] = new Array();
+    messages: string[] = new Array();
 
     constructor(private chatService: ChatService) {
         this.messages = this.chatService.messages;

@@ -3,13 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 
 import { AppComponent }  from './app.component';
-import {Chat} from './chat.component';
-import {CreateMessage} from './create-message.component';
-import {Navbar} from './navbar.component';
+import { Chat } from './chat.component';
+import { CreateMessage } from './create-message.component';
+import { Navbar } from './navbar.component';
 
 
 @NgModule({
-    imports:      [ 
+    imports:      [
         BrowserModule,
         FormsModule,
     ],

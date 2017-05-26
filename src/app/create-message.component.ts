@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { ChatService } from './chat.service'
+import { ChatService } from './chat.service';
 
 @Component({
     selector: 'create-message',
@@ -27,11 +27,11 @@ import { ChatService } from './chat.service'
 })
 
 export class CreateMessage {
-    private cmd: string;
+    cmd: string;
 
     constructor(private chatService: ChatService) {}
 
-    private onSubmit(event: Event) {
+    onSubmit(event: Event) {
         this.chatService.addMessage(this.cmd);
         this.cmd = '';
         event.preventDefault();
